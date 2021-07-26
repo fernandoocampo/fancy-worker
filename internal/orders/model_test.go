@@ -3,8 +3,8 @@ package orders_test
 import (
 	"testing"
 
+	"github.com/fernandoocampo/fancy-worker/internal/adapter/anydb"
 	"github.com/fernandoocampo/fancy-worker/internal/orders"
-	"github.com/fernandoocampo/fancy-worker/internal/repositories"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -14,7 +14,7 @@ func TestTransformOrderToRecord(t *testing.T) {
 		ID:     "123",
 		Amount: 13.45,
 	}
-	expectedRecord := repositories.Record{
+	expectedRecord := anydb.Record{
 		ID:     "123",
 		Amount: 13.45,
 	}

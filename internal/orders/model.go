@@ -3,7 +3,7 @@ package orders
 import (
 	"log"
 
-	"github.com/fernandoocampo/fancy-worker/internal/repositories"
+	"github.com/fernandoocampo/fancy-worker/internal/adapter/anydb"
 )
 
 // Order order data.
@@ -13,8 +13,8 @@ type Order struct {
 }
 
 // ToRecord transform the order to a repository record
-func (o Order) ToRecord() repositories.Record {
-	result := repositories.Record{
+func (o Order) ToRecord() anydb.Record {
+	result := anydb.Record{
 		ID:     o.ID,
 		Amount: o.Amount,
 	}

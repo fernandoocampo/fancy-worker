@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
+	"github.com/fernandoocampo/fancy-worker/internal/adapter/anydb"
 	"github.com/fernandoocampo/fancy-worker/internal/orders"
-	"github.com/fernandoocampo/fancy-worker/internal/repositories"
 	"github.com/fernandoocampo/fancy-worker/internal/workers"
 )
 
@@ -17,21 +17,21 @@ func TestProcessData(t *testing.T) {
 		ID:     "ABC123",
 		Amount: 65.5,
 	}
-	expectedRecord := repositories.Record{
+	expectedRecord := anydb.Record{
 		ID:     "ABC123",
 		Amount: 65.5,
 	}
 	orderStream := make(chan orders.Order)
 	doneStream := make(chan interface{})
 	worker := workers.New(orderStream)
-	resultData := make([]repositories.Record, 0)
+	resultData := make([]anydb.Record, 0)
 	wg := sync.WaitGroup{}
 
 	// WHEN
 	wg.Add(3)
 	go func(done chan interface{}) {
 		defer wg.Done()
-		err := worker.Start(done)
+		err := worker.Run(done)
 		if err != nil {
 			doneStream <- true
 			t.Errorf("unexpected error: %s", err)
@@ -48,7 +48,7 @@ func TestProcessData(t *testing.T) {
 		}
 	}(doneStream, orderStream, request)
 
-	go func(done chan interface{}, result chan repositories.Record) {
+	go func(done chan interface{}, result chan anydb.Record) {
 		defer wg.Done()
 		for {
 			select {

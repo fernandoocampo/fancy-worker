@@ -1,4 +1,4 @@
-package repositories
+package anydb
 
 // Record contains anydb record data.
 type Record struct {
